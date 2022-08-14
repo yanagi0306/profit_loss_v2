@@ -1,0 +1,41 @@
+#Mac GitHub SSH接続設定
+
+#GitHub用の秘密鍵、公開鍵を作成
+ssh-keygen -t ed25519 -N "" -f ~/.ssh/github
+
+-t : 鍵の種類を選択。安全面と性能面で最強なEd25519アルゴリズム一択です。
+-f : ファイル名を指定。デフォルトは ~/.ssh/id_ed25519
+-N : パスフレーズの指定。 "" でパスフレーズなし
+セキュリティを上げるなら設定する。今回は利便性取って設定しません。
+
+#GitHubに公開鍵を登録
+クリップボードに公開鍵をコピー
+$ pbcopy < ~/.ssh/github.pub
+
+鍵の登録
+GitHubの公開鍵の設定画面を開く
+https://github.com/settings/keys
+New SSH key
+Title を適当に入力する(PC名を入れておくと鍵管理しやすい)
+Key にクリップボードにコピーした公開鍵を貼り付ける
+Add SSH Key で鍵を登録する
+
+#~/.ssh/config へ追記
+$ vi ~/.ssh/config
+Host github.com
+  IdentityFile ~/.ssh/github
+  User git
+
+#確認
+下記メッセージを確認
+$ ssh -T github.com
+Warning: Permanently added 'github.com,52.69.186.44' (RSA) to the list of known hosts.
+Hi xxx! You've successfully authenticated, but GitHub does not provide shell access.
+
+鍵の登録
+GitHubの公開鍵の設定画面を開く
+https://github.com/settings/keys
+New SSH key
+Title を適当に入力する(PC名を入れておくと鍵管理しやすい)
+Key にクリップボードにコピーした公開鍵を貼り付ける
+Add SSH Key で鍵を登録する
